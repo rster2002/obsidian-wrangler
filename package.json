@@ -1,0 +1,17 @@
+{
+  "name": "obsidian-wrangler",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "fast-glob": "^3.3.3",
+    "marked": "^17.0.1",
+    "yaml": "^2.8.2"
+  }
+}
