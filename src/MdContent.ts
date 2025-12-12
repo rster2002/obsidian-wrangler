@@ -45,14 +45,14 @@ export default class MdContent {
    * Replace a link in the Markdown content with the label.
    */
   erase(link: Link) {
-    this.inner = this.inner.replace(link.raw, link.label);
+    this.inner = this.inner.replaceAll(link.raw, link.label);
   }
 
   /**
    * Replace a link in the Markdown content with a Markdown link.
    */
   md(link: Link) {
-    this.inner = this.inner.replace(link.raw, `[${link.label}](${link.fullLink})`);
+    this.inner = this.inner.replaceAll(link.raw, `[${link.label}](${link.fullLink})`);
   }
 
   outline(): { level: number, heading: string }[] {

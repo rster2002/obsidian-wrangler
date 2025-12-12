@@ -1,9 +1,7 @@
 import fg from "fast-glob";
-// import MdFile from "./MdFile.ts";
 import Asset from "./Asset.ts";
 import Link from "./Link.ts";
 import { resolve } from "node:path";
-import type MdContent from "./MdContent.ts";
 
 /**
  * Single Obsidian vault.
@@ -68,7 +66,7 @@ export default class Vault {
   }
 
   static async fromRoot(root: string) {
-    const globPath = resolve(root, "**/*.md");
+    const globPath = resolve(root, "**/*");
     return await Vault.fromGlob(globPath, root);
   }
 
