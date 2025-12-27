@@ -1,7 +1,7 @@
 import type Asset from "./Asset.ts";
 import { resolve, dirname } from "node:path";
 import { copyFile, writeFile, mkdir } from "node:fs/promises";
-import { MdContent } from "../index.ts";
+import { MdContent } from "../../index.ts";
 
 export type WritableContents = string | MdContent;
 

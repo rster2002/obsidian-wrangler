@@ -1,6 +1,6 @@
 import Link from "./Link.ts";
 import { readFile } from "node:fs/promises";
-import { MdContent } from "../index.ts";
+import { MdContent } from "../../index.ts";
 import { IMAGE_EXTENSIONS } from "./Extensions.ts";
 
 /**
