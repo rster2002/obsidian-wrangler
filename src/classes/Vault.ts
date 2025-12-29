@@ -3,6 +3,7 @@ import Asset from "./Asset.ts";
 import Link from "./Link.ts";
 import { resolve } from "node:path";
 import vaultArgs, { type VaultArgs } from "../schemas/vaultArgs.ts";
+import type WranglerArgs from "../types/WranglerArgs.ts";
 
 /**
  * Single Obsidian vault.
@@ -16,7 +17,7 @@ export default class Vault {
   /**
    * Return the path of all the included files within this vault instance.
    */
-  paths() {
+  paths(): string[] {
     return this.assets
       .map(asset => asset.fsPath);
   }
@@ -109,7 +110,9 @@ export default class Vault {
    * Construct a new vault based on vault CLI args.
    * @param args The arguments to use.
    */
-  static async fromArgs(args: VaultArgs): Promise<Vault> {
+  static async fromArgs(args: VaultArgs): Promise<Vault>
+  static async fromArgs(args: WranglerArgs): Promise<Vault>
+  static async fromArgs(args: unknown): Promise<Vault> {
     let paths: string[] = [];
 
     const options = vaultArgs.parse(args);

@@ -13,14 +13,14 @@ export default class MdContent {
   /**
    * Get the raw Markdown string.
    */
-  raw() {
+  raw(): string {
     return this.inner;
   }
 
   /**
    * Return the content of the Markdown file without the frontmatter.
    */
-  content() {
+  content(): string {
     let content = this.inner;
     const [capture] = this.frontmatterCaptures();
 
@@ -37,21 +37,21 @@ export default class MdContent {
   /**
    * Find all links in currently in the Markdown content.
    */
-  links() {
+  links(): Link[] {
     return Link.findAllIn(this.content());
   }
 
   /**
    * Replace a link in the Markdown content with the label.
    */
-  erase(link: Link) {
+  erase(link: Link): void {
     this.inner = this.inner.replaceAll(link.raw, link.label);
   }
 
   /**
    * Replace a link in the Markdown content with a Markdown link.
    */
-  md(link: Link) {
+  md(link: Link): void {
     this.inner = this.inner.replaceAll(link.raw, `[${link.label}](${link.fullLink})`);
   }
 

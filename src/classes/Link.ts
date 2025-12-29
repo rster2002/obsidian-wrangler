@@ -64,28 +64,28 @@ export default class Link {
   /**
    * Whether the link is just a hash pointing within the current file.
    */
-  isHash() {
+  isHash(): boolean {
     return this.target === undefined;
   }
 
   /**
    * Whether the link is an external link.
    */
-  isExternal() {
+  isExternal(): boolean {
     return this.target?.startsWith("http") ?? false;
   }
 
   /**
    * Whether the link is a link to a file within the vault.
    */
-  isVaultLink() {
+  isVaultLink(): boolean {
     return !this.isHash() && !this.isExternal();
   }
 
   /**
    * Whether the link is an image link.
    */
-  isImage() {
+  isImage(): boolean {
     return IMAGE_EXTENSIONS.some(ext => this.fullLink.endsWith(ext));
   }
 

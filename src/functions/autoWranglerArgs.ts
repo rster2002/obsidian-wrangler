@@ -2,7 +2,7 @@ import minimist from "minimist";
 import vaultCliArgsSchema from "../schemas/cli/vaultCliArgsSchema.ts";
 import z from "zod";
 import mergeOptionalArrays from "./mergeOptionalArrays.ts";
-import { WranglerArgs } from "../../index.ts";
+import type WranglerArgs from "../types/WranglerArgs.ts";
 
 /**
  * Parses the arguments passed to your script and returns a standard set of extracted arguments which can be used

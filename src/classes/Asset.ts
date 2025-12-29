@@ -49,14 +49,14 @@ export default class Asset {
   /**
    * Whether the asset is a Markdown file.
    */
-  isMarkdown() {
+  isMarkdown(): boolean {
     return this.extension() === "md";
   }
 
   /**
    * Whether the asset is an image file.
    */
-  isImage() {
+  isImage(): boolean {
     return IMAGE_EXTENSIONS.includes(this.extension() ?? "");
   }
 
@@ -93,14 +93,14 @@ export default class Asset {
   /**
    * Returns the contents of the asset as a string.
    */
-  async text() {
+  async text(): Promise<string> {
     return await readFile(this.fsPath, "utf8");
   }
 
   /**
    * Returns the contents of the asset as Markdown content.
    */
-  async mdContent() {
+  async mdContent(): Promise<MdContent> {
     return new MdContent(await this.text());
   }
 }
