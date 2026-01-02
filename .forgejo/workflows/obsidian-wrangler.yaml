@@ -1,0 +1,16 @@
+on:
+  push:
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: docker
+    steps:
+      - name: Configure NPM registry
+        run: |
+          npm config set @{scope}:registry ${{github.SERVER_URL}}/api/packages/{owner}/npm/
+          npm config set "{server_uri_fragment}/api/packages/{owner}/npm/:_authToken=${{secrets.OWNER_TOKEN}}"
+      - uses: https://code.forgejo.org/actions/checkout@v6
+      - run: bun i
+
+
