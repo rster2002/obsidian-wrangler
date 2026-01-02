@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "bun build --target bun --outdir dist ./index.ts",
-    "generate-types": "tsc --declaration --emitDeclarationOnly --declarationDir ./dist/ ./index.ts"
+    "generate-types": "tsc -p ./tsconfig.build.json"
   },
   "exports": {
     ".": {
