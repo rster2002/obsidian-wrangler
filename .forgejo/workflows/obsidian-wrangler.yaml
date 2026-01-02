@@ -5,14 +5,14 @@ jobs:
   publish:
     name: Publish
     runs-on: docker
-    env:
-      NPM_CONFIG_TOKEN: ${{secrets.OWNER_TOKEN}}
     steps:
       - uses: https://code.forgejo.org/actions/checkout@v6
       - uses: https://github.com/oven-sh/setup-bun@v2
       - run: bun i
       - run: bun run build
       - run: bun run generate-types
-      - run: bun publish --registry ${{github.SERVER_URL}}/api/packages/rster2002/npm/
+      - run: bun publish -p --access public --registry ${{github.SERVER_URL}}/api/packages/rster2002/npm/
+        env:
+          NPM_CONFIG_TOKEN: ${{secrets.OWNER_TOKEN}}
 
 
