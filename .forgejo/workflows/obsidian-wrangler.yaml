@@ -8,10 +8,13 @@ jobs:
     steps:
       - name: Configure NPM registry
         run: |
-          npm config set @test:registry ${{github.SERVER_URL}}/api/packages/{owner}/npm/
-          npm config set "//forgejo.app.jumpdrive.dev/api/packages/{owner}/npm/:_authToken=${{secrets.OWNER_TOKEN}}"
+          npm config set @rster2002:registry ${{github.SERVER_URL}}/api/packages/rster2002/npm/
+          npm config set "//forgejo.app.jumpdrive.dev/api/packages/rster2002/npm/:_authToken=${{secrets.OWNER_TOKEN}}"
       - uses: https://code.forgejo.org/actions/checkout@v6
       - uses: https://github.com/oven-sh/setup-bun@v2
       - run: bun i
+      - run: bun run build
+      - run: bun run generate-types
+      - run: bun publish --registry ${{SERVER_URL}}/api/packages/rster2002/npm/
 
 
