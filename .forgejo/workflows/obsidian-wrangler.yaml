@@ -15,6 +15,6 @@ jobs:
       - run: bun i
       - run: bun run build
       - run: bun run generate-types
-      - run: bun publish --registry ${{SERVER_URL}}/api/packages/rster2002/npm/
+      - run: bun publish --registry ${{github.SERVER_URL}}/api/packages/rster2002/npm/
 
 
