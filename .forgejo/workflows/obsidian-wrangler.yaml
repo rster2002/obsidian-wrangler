@@ -11,7 +11,7 @@ jobs:
           npm config set @test:registry ${{github.SERVER_URL}}/api/packages/{owner}/npm/
           npm config set "//forgejo.app.jumpdrive.dev/api/packages/{owner}/npm/:_authToken=${{secrets.OWNER_TOKEN}}"
       - uses: https://code.forgejo.org/actions/checkout@v6
-      - uses: https://github.com/oven-sh/setup-bun
+      - uses: https://github.com/oven-sh/setup-bun@v2
       - run: bun i
 
 
