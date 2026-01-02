@@ -52,7 +52,8 @@ export default class MdContent {
    * Replace a link in the Markdown content with a Markdown link.
    */
   md(link: Link): void {
-    this.inner = this.inner.replaceAll(link.raw, `[${link.label}](${link.fullLink})`);
+    const bang = link.embedded ? "!" : "";
+    this.inner = this.inner.replaceAll(link.raw, `${bang}[${link.label}](${link.fullLink()})`);
   }
 
   outline(): { level: number, heading: string }[] {

@@ -24,7 +24,7 @@ export default class Exporter {
     await this.copyOrWrite(fileName, asset, contents);
   }
 
-  private async copyOrWrite(path: string, asset: Asset, contents?: WritableContents): Promise<void> {
+  protected async copyOrWrite(path: string, asset: Asset, contents?: WritableContents): Promise<void> {
     const target = resolve(this.base, path);
     const writableContents = this.toWritableContents(contents);
 
@@ -37,7 +37,7 @@ export default class Exporter {
     }
   }
 
-  private toWritableContents(contents?: WritableContents): string | undefined {
+  protected toWritableContents(contents?: WritableContents): string | undefined {
     if (contents === undefined) {
       return undefined;
     }

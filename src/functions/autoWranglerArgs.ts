@@ -3,6 +3,7 @@ import vaultCliArgsSchema from "../schemas/cli/vaultCliArgsSchema.ts";
 import z from "zod";
 import mergeOptionalArrays from "./mergeOptionalArrays.ts";
 import type WranglerArgs from "../types/WranglerArgs.ts";
+import extractAction from "./autoWranglerArgs/extractAction.ts";
 
 /**
  * Parses the arguments passed to your script and returns a standard set of extracted arguments which can be used
@@ -23,5 +24,6 @@ export default function autoWranglerArgs(args?: string[]): WranglerArgs {
       options.data!.w,
       options.data!.whitelist,
     ]),
+    action: extractAction(options.data),
   } satisfies WranglerArgs;
 }

@@ -11,42 +11,41 @@ export default class Link {
   /**
    * The raw link string.
    */
-  public readonly raw: string;
+  public raw: string;
 
   /**
    * Whether the link is embedded in the current file.
    */
-  public readonly embedded: boolean;
+  public embedded: boolean;
 
-  /**
-   * The full link target, including the hash.
-   */
-  public readonly fullLink: string;
+  // /**
+  //  * The full link target, including the hash.
+  //  */
+  // public fullLink: string;
 
   /**
    * The label of the link or the target if no label is given.
    */
-  public readonly label: string;
+  public label: string;
 
   /**
    * The target of the link, excluding the hash.
    */
-  public readonly target?: string;
+  public target?: string;
 
   /**
    * The hash of the link, including the `#`.
    */
-  public readonly hash?: string;
+  public hash?: string;
 
   /**
    * The hash of the link, excluding the `#`.
    */
-  public readonly ref?: string;
+  public ref?: string;
 
   constructor(
     raw: string,
     embedded: boolean,
-    fullLink: string,
     label: string,
     target?: string,
     hash?: string,
@@ -54,7 +53,6 @@ export default class Link {
   ) {
     this.raw = raw;
     this.embedded = embedded;
-    this.fullLink = fullLink;
     this.label = label;
     this.target = target;
     this.hash = hash;
@@ -86,7 +84,17 @@ export default class Link {
    * Whether the link is an image link.
    */
   isImage(): boolean {
-    return IMAGE_EXTENSIONS.some(ext => this.fullLink.endsWith(ext));
+    return IMAGE_EXTENSIONS.some(ext => this.fullLink().endsWith(ext));
+  }
+
+  fullLink(): string {
+  let link = this.target || "";
+
+    if (this.hash) {
+      link += this.hash;
+    }
+
+    return link;
   }
 
   static fromWikiCapture(capture: RegExpMatchArray): Link {
@@ -97,7 +105,6 @@ export default class Link {
       return new Link(
         raw,
         embedded,
-        fullLink!,
         label ?? target!.replace("#", ""),
         undefined,
         target,
@@ -108,7 +115,6 @@ export default class Link {
     return new Link(
       raw,
       embedded,
-      fullLink!,
       label! ?? fullLink!,
       target,
       hash,
@@ -124,7 +130,6 @@ export default class Link {
       return new Link(
         raw,
         embedded,
-        fullLink!,
         label ?? target!.replace("#", ""),
         undefined,
         target,
@@ -135,7 +140,6 @@ export default class Link {
     return new Link(
       raw,
       embedded,
-      fullLink!,
       label! ?? fullLink!,
       target,
       hash,
