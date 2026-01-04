@@ -5,6 +5,9 @@ import { MdContent } from "../../index.ts";
 
 export type WritableContents = string | MdContent;
 
+/**
+ * Utility for exporting content to a directory structure.
+ */
 export default class Exporter {
   constructor(
     public readonly base: string,
