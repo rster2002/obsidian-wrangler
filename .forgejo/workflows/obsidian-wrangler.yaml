@@ -13,4 +13,4 @@ jobs:
       - run: bun i
       - run: bun run build
       - run: bun run generate-types
-      - run: bun publish -p --access public --registry
+      - run: bun publish -p --access public
