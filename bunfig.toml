@@ -1,0 +1,2 @@
+[install.scopes]
+"@rster2002" = { token = "$npm_token", url = "https://forgejo.app.jumpdrive.dev/api/packages/rster2002/npm/" }
