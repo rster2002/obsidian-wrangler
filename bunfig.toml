@@ -1,5 +1,5 @@
 [install.registry]
-token = "$npm_tokenabc"
+token = "$npm_token"
 url = "https://forgejo.app.jumpdrive.dev/api/packages/rster2002/npm/"
 
 #[install.scopes]
