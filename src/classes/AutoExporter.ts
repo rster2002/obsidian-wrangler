@@ -4,11 +4,21 @@ import type WranglerArgs from "../types/WranglerArgs.ts";
 import type Asset from "./Asset.ts";
 import AssetView from "./AssetView.ts";
 import type Vault from "./Vault.ts";
-import { relative, dirname, basename, resolve } from "node:path";
+import { relative, dirname, basename } from "node:path";
+import type Link from "./Link.ts";
 
+export type IncludeMiddleware = (asset: Asset) => Promise<boolean>;
+export type LinkMiddleware = (link: Link) => Promise<Link>;
+
+/**
+ * Imperative exporter for Markdown files and assets within a vault.
+ */
 export default class AutoExporter extends Exporter {
   public readonly vault: Vault;
   public readonly options: AutoExporterArgs;
+
+  private readonly includeMiddlewares: IncludeMiddleware[] = [];
+  private readonly linkMiddlewares: LinkMiddleware[] = [];
 
   constructor(vault: Vault, args: AutoExporterArgs)
   constructor(vault: Vault, args: WranglerArgs)
@@ -20,6 +30,21 @@ export default class AutoExporter extends Exporter {
     this.options = options;
   }
 
+  /**
+   * Add a middleware for
+   * @param middleware
+   */
+  addIncludeMiddleware(middleware: IncludeMiddleware) {
+    this.includeMiddlewares.push(middleware);
+  }
+
+  addLinkMiddleware(middleware: LinkMiddleware) {
+    this.linkMiddlewares.push(middleware);
+  }
+
+  /**
+   * Automatically export Markdown files with the current configured source.
+   */
   async autoExportMd() {
     const exports = this.options.export;
 
@@ -39,13 +64,29 @@ export default class AutoExporter extends Exporter {
     return await this.exportManyMd(subview);
   }
 
+  /**
+   * Export Markdown files within the given asset view.
+   * @param assetView View to use,
+   */
   async exportManyMd(assetView: AssetView): Promise<void> {
-    for (const asset of assetView.markdownAssets()) {
-      await this.exportMd(asset);
+    for (const asset of assetView.assets) {
+      const include = await this.includeAsset(asset);
+
+      if (!include) {
+        continue;
+      }
+
+      await this.exportAsset(asset);
     }
   }
 
-  async exportMd(asset: Asset) {
+  async exportAsset(asset: Asset): Promise<void> {
+    if (asset.isMarkdown()) {
+      await this.exportAsset(asset);
+    }
+  }
+
+  async exportMd(asset: Asset): Promise<void> {
     if (!asset.isMarkdown()) {
       throw new Error("Attempt to export non markdown content using AutoExporter.exportMd");
     }
@@ -53,7 +94,11 @@ export default class AutoExporter extends Exporter {
     const placementPath = this.placementPath(asset);
     const content = await asset.mdContent();
 
-    for (const link of content.links()) {
+    for (let link of content.links()) {
+      for (const middleware of this.linkMiddlewares) {
+        link = await middleware(link);
+      }
+
       if (link.isExternal() || link.isHash()) {
         content.md(link);
         continue;
@@ -72,8 +117,20 @@ export default class AutoExporter extends Exporter {
     await this.copyOrWrite(placementPath, asset, content);
   }
 
-  async exportAsset(asset: Asset): Promise<void> {
+  /**
+   * Whether the target asset should be included in the export.
+   * @param asset The asset to check.
+   * @protected
+   */
+  protected async includeAsset(asset: Asset): Promise<boolean> {
+    for (const middleware of this.includeMiddlewares) {
+      const result = await middleware(asset);
+      if (!result) {
+        return false;
+      }
+    }
 
+    return true;
   }
 
   protected resolvePlacementOf(from: Asset, to: Asset, linkPlacement = this.options.linkPlacement): string {

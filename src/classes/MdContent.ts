@@ -1,6 +1,7 @@
 import yaml from "yaml";
 import Link from "./Link.ts";
 import { marked } from "marked";
+import Frontmatter from "./Frontmatter.ts";
 
 /**
  * Wrapped Markdown string contents.
@@ -53,7 +54,7 @@ export default class MdContent {
    */
   md(link: Link): void {
     const bang = link.embedded ? "!" : "";
-    this.inner = this.inner.replaceAll(link.raw, `${bang}[${link.label}](${link.fullLink()})`);
+    this.inner = this.inner.replaceAll(link.raw, `${bang}[${link.label}](${link.fullLink})`);
   }
 
   outline(): { level: number, heading: string }[] {
@@ -69,19 +70,19 @@ export default class MdContent {
   }
 
   /**
-   * Get the frontmatter of the Markdown file as a JSON object.
+   * Get the frontmatter of the Markdown file, if any.
    */
-  frontmatter(): Record<string, any> | null {
+  frontmatter(): Frontmatter {
     const [capture] = this.frontmatterCaptures();
 
     if (capture === undefined || capture.length < 2) {
-      return null;
+      return new Frontmatter(null);
     }
 
     const [_, inner] = capture;
 
     try {
-      return yaml.parse(inner!);
+      return new Frontmatter(yaml.parse(inner!));
     } catch (e) {
       throw new Error(`Failed to parse frontmatter: ${e}`);
     }

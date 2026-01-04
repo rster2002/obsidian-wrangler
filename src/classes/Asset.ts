@@ -77,6 +77,8 @@ export default class Asset {
       search = target;
     }
 
+    search = search.replace(/\\?$/, "");
+
     if (search.match(/\.\w+$/) === null) {
       search += ".md";
     }

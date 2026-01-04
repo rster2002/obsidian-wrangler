@@ -43,6 +43,22 @@ export default class Link {
    */
   public ref?: string;
 
+  get fullLink() {
+    let link = this.target || "";
+
+    if (this.hash) {
+      link += this.hash;
+    }
+
+    return link;
+  }
+
+  set fullLink(fullLink: string) {
+    const [target, ...hash] = fullLink.split("#");
+    this.target = target;
+    this.hash = "#" + hash.join("#");
+  }
+
   constructor(
     raw: string,
     embedded: boolean,
@@ -84,17 +100,7 @@ export default class Link {
    * Whether the link is an image link.
    */
   isImage(): boolean {
-    return IMAGE_EXTENSIONS.some(ext => this.fullLink().endsWith(ext));
-  }
-
-  fullLink(): string {
-  let link = this.target || "";
-
-    if (this.hash) {
-      link += this.hash;
-    }
-
-    return link;
+    return IMAGE_EXTENSIONS.some(ext => this.fullLink.endsWith(ext));
   }
 
   static fromWikiCapture(capture: RegExpMatchArray): Link {
