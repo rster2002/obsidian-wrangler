@@ -6,7 +6,7 @@ jobs:
     name: Publish
     runs-on: docker
     env:
-      NPM_CONFIG_TOKEN: ${{secrets.OWNER_TOKEN}}
+      NPM_TOKEN: ${{secrets.OWNER_TOKEN}}
     steps:
       - uses: https://code.forgejo.org/actions/checkout@v6
       - uses: https://github.com/oven-sh/setup-bun@v2
